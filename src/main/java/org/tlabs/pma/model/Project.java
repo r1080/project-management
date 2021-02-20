@@ -10,11 +10,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="project")
+@Table(name = "project")
 public class Project {
 
 	@Id
@@ -26,11 +27,13 @@ public class Project {
 	private String stage; // - NOTSTARTED, COMPLETED, INPROGRESS
 	@Column
 	private String description;
-	
-	@OneToMany(mappedBy="project",fetch=FetchType.LAZY,cascade={
-			CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.DETACH})
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH, CascadeType.DETACH })
+	@JoinTable(name = "project_employee", joinColumns = { @JoinColumn(name = "project_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "employee_id") })
 	private List<Employee> employeeList;
-	
+
 	public List<Employee> getEmployeeList() {
 		return employeeList;
 	}

@@ -1,12 +1,16 @@
 package org.tlabs.pma.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -23,15 +27,17 @@ public class Employee {
 	@Column
 	private String email;
 	
-	@ManyToOne
-	@JoinColumn(name="project_id")
-	private Project project;
+	@ManyToMany(cascade={ CascadeType.MERGE,CascadeType.PERSIST, CascadeType.REFRESH , CascadeType.DETACH})
+	@JoinTable(name = "project_employee", joinColumns = { @JoinColumn(name = "employee_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "project_id") })
+	private List<Project> project;
 	
-	public Project getProject() {
+
+	public List<Project> getProject() {
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(List<Project> project) {
 		this.project = project;
 	}
 

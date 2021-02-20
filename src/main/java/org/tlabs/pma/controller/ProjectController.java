@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.tlabs.pma.model.Employee;
 import org.tlabs.pma.model.Project;
 import org.tlabs.pma.repository.EmployeeRepository;
@@ -45,14 +44,12 @@ public class ProjectController {
 	}
 	
 	@PostMapping("/save")
-	public String saveProject(Model model, Project project, RedirectAttributes redirectAttributes){
+	public String saveProject(Model model, Project project){
 		
 		logger.info("-------> POST REQUEST TO SAVE PROJECT {} ",project);
 		
 		projectRepository.save(project);
-		
-		redirectAttributes.addFlashAttribute(project);
-		
+				
 		return "redirect:/project/view";
 	}
 
