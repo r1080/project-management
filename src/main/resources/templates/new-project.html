@@ -20,28 +20,34 @@
 
 	<nav th:replace="layouts :: navbar"></nav>
 
+	<br>
+
 	<div class="container">
 		<form action="/project/save" th:object="${project}" method="POST">
 
-			<input type="text" placeholder="Project Name" th:field="*{name}">
-
-			<select th:field="${project.stage}">
-				<option th:value="NOTSTARTED">Not Started</option>
-				<option th:value="INPROGRESS">In Progress</option>
-				<option th:value="COMPLETED">Completed</option>
-			</select>
-
-			<textarea type="text" placeholder="Enter Project Description"
-				th:field="${project.description}"></textarea>
-
-			<select th:field="*{employeeList}" multiple="multiple">
-				<option th:each="employee: ${allEmployees}"
-					th:value="${employee.employeeId}" 
-					th:text="${employee.firstName}">
-			</select>
-
-			<button type="submit">Create Project</button>
-
+			<div class="form-group row">
+				<input type="text" placeholder="Project Name" th:field="*{name}">
+			</div>
+			<div class="form-group row">
+				<select th:field="${project.stage}">
+					<option th:value="NOTSTARTED">Not Started</option>
+					<option th:value="INPROGRESS">In Progress</option>
+					<option th:value="COMPLETED">Completed</option>
+				</select>
+			</div>
+			<div class="form-group row">
+				<textarea type="text" placeholder="Enter Project Description"
+					th:field="${project.description}"></textarea>
+			</div>
+			<div class="form-group row">
+				<select th:field="*{employeeList}" multiple="multiple">
+					<option th:each="employee: ${allEmployees}"
+						th:value="${employee.employeeId}" th:text="${employee.firstName}">
+				</select>
+			</div>
+			<div class="form-group row">
+				<button type="submit" class="btn btn-info">Enter Project</button>
+			</div>
 		</form>
 	</div>
 

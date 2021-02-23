@@ -3,16 +3,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="layouts :: header"></head>
-
 <nav th:replace="layouts :: navbar"></nav>
 
 <body>
 
-
-
 	<div class="container">
 
-		<h3>Main Dashboard</h3>
+		<h3 class="padding-top">Main Dashboard</h3>
 		<a th:text="${versionNumber}"></a>
 		<hr>
 		<h4>Current Projects</h4>
@@ -30,22 +27,18 @@
 							<td th:text="${aProject.name}" />
 							<td th:text="${aProject.stage}" />
 						</tr>
-
 					</tbody>
 
 				</table>
 			</div>
 
-
 			<div class="col-md-4">
 				<canvas id="myPieChart" height="50" width="50"></canvas>
-
 				<script>
 					var chartData = "[[${projectStatusCnt}]]"
 				</script>
 
 			</div>
-
 		</div>
 	</div>
 
@@ -65,7 +58,7 @@
 						<tr th:each="aEmployeeProjectCnt : ${employeesListProjectsCnt}">
 							<td th:text="${aEmployeeProjectCnt.firstName}" />
 							<td th:text="${aEmployeeProjectCnt.lastName}" />
-							<td th:text="${aEmployeeProjectCnt.projectCount}"/>
+							<td th:text="${aEmployeeProjectCnt.projectCount}" />
 						</tr>
 
 					</tbody>

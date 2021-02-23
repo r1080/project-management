@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Value("${version}")
+	private String version;
 
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -29,16 +33,15 @@ public class HomeController {
 	private EmployeeRepository employeeRepository;
 
 	@GetMapping
-	public String diplayMainDashboard(Model model) {
+	public String displayMainDashboard(Model model) {
 
-		logger.info("Home Main Dashboard");
 		model.addAttribute("projectsList", projectRepository.findAll());
 		model.addAttribute("employeesListProjectsCnt", employeeRepository.employeeProjects());
+		model.addAttribute("versionNumber",version);
 
 		List<ProjectStage> projectStage = projectRepository.projectStage();
 
 		String projectStageJson = convertToJsonString(projectStage);
-		System.out.println("Json String ::  " + projectStageJson);
 		
 		model.addAttribute("projectStatusCnt", projectStageJson);
 

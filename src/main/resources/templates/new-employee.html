@@ -11,9 +11,7 @@
 	<br>
 	<div class="container">
 	
-	
 		<form th:action="@{/employee/save}" th:object="${employee}" method="POST">
-		
 		
 		<!--  This will be used to bind to the employee that was clicked on (USED FOR UPDATES)-->
 		<input type="hidden" th:field="${employee.employeeId}"/>
