@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.tlabs.pma.dto.ProjectStage;
 import org.tlabs.pma.repository.EmployeeRepository;
-import org.tlabs.pma.repository.ProjectRepository;
+import org.tlabs.pma.service.ProjectService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,9 +25,9 @@ public class HomeController {
 	
 	@Value("${version}")
 	private String version;
-
+	
 	@Autowired
-	private ProjectRepository projectRepository;
+	private ProjectService projectService;
 
 	@Autowired
 	private EmployeeRepository employeeRepository;
@@ -35,11 +35,11 @@ public class HomeController {
 	@GetMapping
 	public String displayMainDashboard(Model model) {
 
-		model.addAttribute("projectsList", projectRepository.findAll());
+		model.addAttribute("projectsList", projectService.findAllProjects());
 		model.addAttribute("employeesListProjectsCnt", employeeRepository.employeeProjects());
 		model.addAttribute("versionNumber",version);
 
-		List<ProjectStage> projectStage = projectRepository.projectStage();
+		List<ProjectStage> projectStage = projectService.getProjectStages();
 
 		String projectStageJson = convertToJsonString(projectStage);
 		
@@ -58,6 +58,17 @@ public class HomeController {
 			logger.error("Error converting to json {}", e);
 		}
 		return jsonString;
+	}
+	
+	//TODO: metrics controller methods.
+	@GetMapping("/metrics")
+	public String displayMetricsPage(Model model){
+	    
+		System.out.println("OUTPUT::: " + projectService.getTimelineMetrics());
+		
+		model.addAttribute("timelineData", projectService.getTimelineMetrics());
+		
+		return "metrics";
 	}
 
 }

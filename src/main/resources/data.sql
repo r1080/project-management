@@ -10,10 +10,10 @@ insert into employee (employee_id, first_name, last_name, email) values (8, 'Hon
 insert into employee (employee_id, first_name, last_name, email) values (9, 'Tony', 'Roggers', 'roggers@gmail.com');
 
 -- INSERT PROJECTS			
-insert into project (project_id, name, stage, description) values (1000, 'Large Production Deploy', 'NOTSTARTED', 'This requires all hands on deck for the final deployment of the software into production');
-insert into project (project_id, name, stage, description) values (1001, 'New Employee Budget',  'COMPLETED', 'Decide on a new employee bonus budget for the year and figureout who will be promoted');
-insert into project (project_id, name, stage, description) values (1002, 'Office Reconstruction', 'INPROGRESS', 'The office building in Monroe has been damaged due to hurricane in the region. This needs to be reconstructed');
-insert into project (project_id, name, stage, description) values (1003, 'Improve Intranet Security', 'INPROGRESS', 'With the recent data hack, the office security needs to be improved and proper security team needs to be hired for implementation');
+insert into project (project_id, name, stage, description,start_date,end_date) values (1000, 'Large Production Deploy', 'NOTSTARTED', 'Final deployment of the software into production','2021-03-05','2021-03-27');
+insert into project (project_id, name, stage, description,start_date,end_date) values (1001, 'New Employee Budget',  'COMPLETED', 'Employee bonus budget for the year promoted','2021-03-27','2021-05-27');
+insert into project (project_id, name, stage, description,start_date,end_date) values (1002, 'Office Reconstruction', 'INPROGRESS', 'The office building in Monroe needs to be reconstructed','2021-05-27','2021-08-27');
+insert into project (project_id, name, stage, description,start_date,end_date) values (1003, 'Improve Intranet Security', 'INPROGRESS', 'With the recent data hack, the office security needs to be improved','2021-08-27','2021-10-27');
 
 -- INSERT PROJECT_EMPLOYEE_RELATION (Removed duplicates from video)
 insert into project_employee (employee_id, project_id) values (1,1000);

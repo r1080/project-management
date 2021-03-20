@@ -1,5 +1,6 @@
 package org.tlabs.pma.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name = "project")
@@ -26,7 +30,14 @@ public class Project {
 	@Column
 	private String stage; // - NOTSTARTED, COMPLETED, INPROGRESS
 	@Column
+	@Size(max=70)
 	private String description;
+	@Column
+	@DateTimeFormat(pattern="MM/dd/yyyy")
+	private Date startDate;
+	@Column
+	@DateTimeFormat(pattern="MM/dd/yyyy")
+	private Date endDate;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH, CascadeType.DETACH })
@@ -73,6 +84,22 @@ public class Project {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
 	public Project(Long projectId, String name, String stage, String description) {
 		this.projectId = projectId;
@@ -88,7 +115,8 @@ public class Project {
 	@Override
 	public String toString() {
 		return "Project [projectId=" + projectId + ", name=" + name + ", stage=" + stage + ", description="
-				+ description + "]";
+				+ description + ", startDate=" + startDate + ", endDate=" + endDate + ", employeeList=" + employeeList
+				+ "]";
 	}
 
 }

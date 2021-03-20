@@ -7,8 +7,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.tlabs.pma.model.Employee;
@@ -42,7 +44,7 @@ public class EmployeeController {
 		return "list-employees";
 	}
 
-	@GetMapping("/update")
+	@PutMapping("/update")
 	public String updateEmployee(Model model, @RequestParam("id") Long id) {
 		Optional<Employee> optional = employeeRepository.findById(id);
 		if (optional.isPresent()) {
@@ -52,7 +54,7 @@ public class EmployeeController {
 		return "list-employees";
 	}
 	
-	@GetMapping("/delete")
+	@DeleteMapping("/delete")
 	public String deleteEmployee(Model model, @RequestParam("id") Long id) {
 		employeeRepository.deleteById(id);
 		return "redirect:/employee/view";
