@@ -6,16 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.tlabs.pma.dto.ProjectStage;
+import org.tlabs.pma.model.Project;
 import org.tlabs.pma.repository.EmployeeRepository;
 import org.tlabs.pma.service.ProjectService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Controller
 @RequestMapping("/home")
@@ -32,10 +37,13 @@ public class HomeController {
 	@Autowired
 	private EmployeeRepository employeeRepository;
 
-	@GetMapping
-	public String displayMainDashboard(Model model) {
+	@GetMapping("/page/{pageNo}")
+	public String displayMainDashboard(@PathVariable int pageNo, Model model) {
 
-		model.addAttribute("projectsList", projectService.findAllProjects());
+		//model.addAttribute("projectsList", projectService.findAllProjects());
+		
+		displayPaginatedProjects(pageNo,model);
+		
 		model.addAttribute("employeesListProjectsCnt", employeeRepository.employeeProjects());
 		model.addAttribute("versionNumber",version);
 
@@ -69,6 +77,17 @@ public class HomeController {
 		model.addAttribute("timelineData", projectService.getTimelineMetrics());
 		
 		return "metrics";
+	}
+	
+	private void displayPaginatedProjects(int pageNo, Model model){
+		
+		Page<Project> paginatedProjects = projectService.findPaginatedProjects(pageNo, 5);
+		
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("noOfPages", paginatedProjects.getTotalPages());
+		model.addAttribute("totalItems", paginatedProjects.getTotalElements());
+	    model.addAttribute("projectsList", paginatedProjects.getContent());
+	
 	}
 
 }

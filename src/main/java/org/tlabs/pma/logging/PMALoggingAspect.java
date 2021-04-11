@@ -18,7 +18,10 @@ public class PMALoggingAspect {
 	@Pointcut("execution(* org.tlabs.pma.controller.*.*(..))")
 	public void logBeforeControllerMethods(){}
 	
-	@Before("logBeforeControllerMethods()")
+	@Pointcut("execution(* org.tlabs.pma.service.*.*(..))")
+	public void logBeforeServiceMethods(){}
+	
+	@Before("logBeforeControllerMethods() && logBeforeServiceMethods()")
 	public void beforeContollerMethod(JoinPoint joinPoint){
 		LOGGER.info("{}.{}()",joinPoint.getSignature().getDeclaringTypeName(),joinPoint.getSignature().getName());
 		for(Object arg : joinPoint.getArgs()){

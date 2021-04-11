@@ -23,24 +23,27 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Project {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long projectId;
 	@Column
 	private String name;
 	@Column
 	private String stage; // - NOTSTARTED, COMPLETED, INPROGRESS
 	@Column
-	@Size(max=70)
+	@Size(max = 70)
 	private String description;
 	@Column
-	@DateTimeFormat(pattern="MM/dd/yyyy")
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date startDate;
 	@Column
-	@DateTimeFormat(pattern="MM/dd/yyyy")
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date endDate;
+	@Column
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
+	private Date targetDate;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH, CascadeType.DETACH })
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH,
+			CascadeType.DETACH })
 	@JoinTable(name = "project_employee", joinColumns = { @JoinColumn(name = "project_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "employee_id") })
 	private List<Employee> employeeList;
@@ -84,7 +87,7 @@ public class Project {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -101,22 +104,23 @@ public class Project {
 		this.endDate = endDate;
 	}
 
-	public Project(Long projectId, String name, String stage, String description) {
-		this.projectId = projectId;
-		this.name = name;
-		this.stage = stage;
-		this.description = description;
-	}
-
 	public Project() {
 
+	}
+
+	public Date getTargetDate() {
+		return targetDate;
+	}
+
+	public void setTargetDate(Date targetDate) {
+		this.targetDate = targetDate;
 	}
 
 	@Override
 	public String toString() {
 		return "Project [projectId=" + projectId + ", name=" + name + ", stage=" + stage + ", description="
-				+ description + ", startDate=" + startDate + ", endDate=" + endDate + ", employeeList=" + employeeList
-				+ "]";
+				+ description + ", startDate=" + startDate + ", endDate=" + endDate + ", targetDate=" + targetDate
+				+ ", employeeList=" + employeeList + "]";
 	}
 
 }

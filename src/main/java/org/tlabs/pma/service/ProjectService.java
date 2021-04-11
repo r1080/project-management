@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.tlabs.pma.dto.ProjectStage;
 import org.tlabs.pma.model.Project;
@@ -71,4 +75,12 @@ public class ProjectService {
 	}
 	
 
+	public Page<Project> findPaginatedProjects(int pageNo, int size){
+		Sort sort = Sort.by("targetDate").ascending();
+		Pageable page = PageRequest.of(pageNo-1, size,sort);
+		Page<Project> pageProjects = projectRepository.findAll(page);
+		return pageProjects;
+	}
+	
+	
 }

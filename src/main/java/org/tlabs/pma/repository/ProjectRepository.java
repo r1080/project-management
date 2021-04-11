@@ -3,11 +3,11 @@ package org.tlabs.pma.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.tlabs.pma.dto.ProjectStage;
 import org.tlabs.pma.model.Project;
 
-public interface ProjectRepository extends CrudRepository<Project, Long> {
+public interface ProjectRepository extends PagingAndSortingRepository<Project, Long> {
 
 	@Override
 	public List<Project> findAll();
