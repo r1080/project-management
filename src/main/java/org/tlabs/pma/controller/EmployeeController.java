@@ -13,16 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.tlabs.pma.logging.LogTime;
 import org.tlabs.pma.model.Employee;
-import org.tlabs.pma.repository.EmployeeRepository;
+import org.tlabs.pma.service.EmployeeService;
 
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
-
+	private EmployeeService employeeService;
+		
 	@GetMapping
 	public String displayAddEmployee(Model model) {
 		Employee employee = new Employee();
@@ -32,21 +33,23 @@ public class EmployeeController {
 
 	@PostMapping("/save")
 	public String addEmployee(Employee employee) {
-		employeeRepository.save(employee);
+		employeeService.save(employee);
 		return "redirect:/employee";
 	}
 
 	@GetMapping("/view")
+	@LogTime
 	public String getEmployeeList(Model model) {
 		List<Employee> empList = new ArrayList<>();
-		employeeRepository.findAll().forEach(e -> empList.add(e));
+		employeeService.findAllEmployees().forEach(e -> empList.add(e));
 		model.addAttribute("employees", empList);
 		return "list-employees";
 	}
 
 	@PutMapping("/update")
+	@LogTime
 	public String updateEmployee(Model model, @RequestParam("id") Long id) {
-		Optional<Employee> optional = employeeRepository.findById(id);
+		Optional<Employee> optional = employeeService.findById(id);
 		if (optional.isPresent()) {
 			model.addAttribute(model.addAttribute("employee", optional.get()));
 			return "new-employee";
@@ -55,8 +58,9 @@ public class EmployeeController {
 	}
 	
 	@DeleteMapping("/delete")
+	@LogTime
 	public String deleteEmployee(Model model, @RequestParam("id") Long id) {
-		employeeRepository.deleteById(id);
+		employeeService.deleteById(id);
 		return "redirect:/employee/view";
 	}
 

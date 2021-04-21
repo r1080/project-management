@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.tlabs.pma.dto.ProjectStage;
+import org.tlabs.pma.logging.LogTime;
 import org.tlabs.pma.model.Project;
-import org.tlabs.pma.repository.EmployeeRepository;
+import org.tlabs.pma.service.EmployeeService;
 import org.tlabs.pma.service.ProjectService;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 
 @Controller
 @RequestMapping("/home")
@@ -35,16 +34,17 @@ public class HomeController {
 	private ProjectService projectService;
 
 	@Autowired
-	private EmployeeRepository employeeRepository;
-
+	private EmployeeService employeeService;
+	
 	@GetMapping("/page/{pageNo}")
+	@LogTime
 	public String displayMainDashboard(@PathVariable int pageNo, Model model) {
 
 		//model.addAttribute("projectsList", projectService.findAllProjects());
 		
 		displayPaginatedProjects(pageNo,model);
 		
-		model.addAttribute("employeesListProjectsCnt", employeeRepository.employeeProjects());
+		model.addAttribute("employeesListProjectsCnt", employeeService.getEmployeeProjectCount());
 		model.addAttribute("versionNumber",version);
 
 		List<ProjectStage> projectStage = projectService.getProjectStages();

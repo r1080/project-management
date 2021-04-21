@@ -24,6 +24,7 @@ public class ProjectService {
 	@Autowired
 	private ProjectRepository projectRepository;
 
+	
 	public String getTimelineMetrics() {
 
 		List<Project> projectList = projectRepository.findAll();
@@ -48,6 +49,7 @@ public class ProjectService {
 		return timeLineJsonString;
 	}
 	
+	
 	public List<Project> findAllProjects(){
 		return projectRepository.findAll();
 	}
@@ -57,6 +59,7 @@ public class ProjectService {
 		String output = sdf.format(date);
 		return output;
 	}
+	
 	
 	public List<ProjectStage> getProjectStages(){
 		return projectRepository.projectStage();
@@ -74,7 +77,7 @@ public class ProjectService {
 		return jsonString;
 	}
 	
-
+	
 	public Page<Project> findPaginatedProjects(int pageNo, int size){
 		Sort sort = Sort.by("targetDate").ascending();
 		Pageable page = PageRequest.of(pageNo-1, size,sort);

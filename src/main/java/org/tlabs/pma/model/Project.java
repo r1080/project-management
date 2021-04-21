@@ -14,18 +14,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.tlabs.pma.validator.ValidDate;
 
 @Entity
 @Table(name = "project")
+@ValidDate
 public class Project {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long projectId;
 	@Column
+	@NotBlank(message="Project Name Must Not Be Null")
 	private String name;
 	@Column
 	private String stage; // - NOTSTARTED, COMPLETED, INPROGRESS

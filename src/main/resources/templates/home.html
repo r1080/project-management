@@ -36,7 +36,7 @@
 		<div th:if="${noOfPages > 1}">
 			<div class="row col-sm-10">
 				<div class="col-sm-0">Total Rows: [[${totalItems}]] &nbsp;&nbsp;&nbsp; </div>
-				<div class="col-sm-2">
+				<div class="col-sm-3">
 					<span th:each="i: ${#numbers.sequence(1, noOfPages)}"> <a
 						th:if="${currentPage != i}"
 						th:href="@{${i}}">[[${i}]]</a>
