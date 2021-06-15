@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.tlabs.pma.dto.ProjectStage;
 import org.tlabs.pma.logging.LogTime;
@@ -89,5 +90,17 @@ public class HomeController {
 	    model.addAttribute("projectsList", paginatedProjects.getContent());
 	
 	}
-
+	
+	@GetMapping
+	public String loginPage(Model model){
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public String loginHome(String username, String password){
+		
+		logger.info("UserName, Password {},{} " ,username, password );
+		
+		return "redirect:/home/page/1";
+	}
 }
