@@ -31,7 +31,6 @@ public class ProjectService {
 
 		List<List<String>> timeLineData = new ArrayList<>();
 
-		//TODO: Add a check against null empty date and start date
 		int counter = 0;
 		for (Project project : projectList) {
 
@@ -39,7 +38,7 @@ public class ProjectService {
 
 			rowData.add(0, project.getName());
 			rowData.add(1, formatDate(project.getStartDate()));
-			rowData.add(2, formatDate(project.getEndDate()));
+			rowData.add(2, formatDate(project.getTargetDate()));
 
 			timeLineData.add(counter++, rowData);
 		}
@@ -75,6 +74,10 @@ public class ProjectService {
 			
 		}
 		return jsonString;
+	}
+	
+	public List<Project> findProjectsByStage(String stage) {
+		return projectRepository.findProjectsByStage(stage);
 	}
 	
 	

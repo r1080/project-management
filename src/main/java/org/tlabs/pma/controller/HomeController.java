@@ -1,6 +1,7 @@
 package org.tlabs.pma.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,31 +27,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class HomeController {
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
+
 	@Value("${version}")
 	private String version;
-	
+
 	@Autowired
 	private ProjectService projectService;
 
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@GetMapping("/page/{pageNo}")
 	@LogTime
 	public String displayMainDashboard(@PathVariable int pageNo, Model model) {
 
-		//model.addAttribute("projectsList", projectService.findAllProjects());
-		
-		displayPaginatedProjects(pageNo,model);
-		
+		displayPaginatedProjects(pageNo, model);
+
 		model.addAttribute("employeesListProjectsCnt", employeeService.getEmployeeProjectCount());
-		model.addAttribute("versionNumber",version);
+		model.addAttribute("versionNumber", version);
 
 		List<ProjectStage> projectStage = projectService.getProjectStages();
 
 		String projectStageJson = convertToJsonString(projectStage);
-		
+
 		model.addAttribute("projectStatusCnt", projectStageJson);
 
 		return "home";
@@ -67,27 +66,34 @@ public class HomeController {
 		}
 		return jsonString;
 	}
-	
-	//TODO: metrics controller methods.
+
 	@GetMapping("/metrics")
-	public String displayMetricsPage(Model model){
-	    
-		System.out.println("OUTPUT::: " + projectService.getTimelineMetrics());
+	@LogTime
+	public String displayMetricsPage(Model model) {
 		
+		
+		List<Project> completedProjects = projectService.findProjectsByStage("COMPLETED");
+		
+		model.addAttribute("completedProjects", completedProjects);
+
 		model.addAttribute("timelineData", projectService.getTimelineMetrics());
-		
+
 		return "metrics";
 	}
-	
-	private void displayPaginatedProjects(int pageNo, Model model){
-		
+
+	private void displayPaginatedProjects(int pageNo, Model model) {
+
 		Page<Project> paginatedProjects = projectService.findPaginatedProjects(pageNo, 5);
-		
+
 		model.addAttribute("currentPage", pageNo);
 		model.addAttribute("noOfPages", paginatedProjects.getTotalPages());
 		model.addAttribute("totalItems", paginatedProjects.getTotalElements());
-	    model.addAttribute("projectsList", paginatedProjects.getContent());
-	
+
+		List<Project> currentProjects = paginatedProjects.getContent().stream()
+				.filter(p -> !p.getStage().equals("COMPLETED")).collect(Collectors.toList());
+		
+		model.addAttribute("projectsList", currentProjects);
+
 	}
 
 }

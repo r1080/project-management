@@ -12,7 +12,34 @@
 
 <body>
 
-	<h5 style="padding: 4px;padding-top: 7px;">Project Completion Timelines</h5>
+<div class="container">
+	<h5 style="padding: 4px;padding-top: 7px;">Completed Projects</h5>
+		<div class="row">
+			<div class="col-md-6">
+				<table class="table table-bordered table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th>Project Name</th>
+							<th>Completed Date</th>
+							<th>Target Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="project : ${completedProjects}">
+							<td th:text="${project.name}" />
+							<td th:text="${project.endDate}" />
+							<td th:text="${project.targetDate}" />
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+
+	</div>
+
+<div class="container">
+	<h5 style="padding: 4px;padding-top: 7px;">Project Timelines</h5>
 
 	<div id="timeLineDataModel" style="display:none;">
 		<p th:text="${timelineData}">Test</p>
@@ -25,7 +52,7 @@
 	<hr>
 
 	<div id="table_div"></div>
-
+</div>
 </body>
 
 

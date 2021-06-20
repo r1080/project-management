@@ -15,5 +15,8 @@ public interface ProjectRepository extends PagingAndSortingRepository<Project, L
 	@Query(nativeQuery=true,value="select stage as projectStage, count(stage) as stageCount "
 			+ "from project group by stage order by 2 desc")
 	public List<ProjectStage> projectStage();
-
+	
+	@Query(nativeQuery=true,value="select * from project where stage=?1")
+	public List<Project> findProjectsByStage(String stage);
+			
 }
