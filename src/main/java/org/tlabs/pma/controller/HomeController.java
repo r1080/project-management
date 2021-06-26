@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.tlabs.pma.dto.ProjectStage;
 import org.tlabs.pma.logging.LogTime;
 import org.tlabs.pma.model.Project;
+import org.tlabs.pma.security.PMASecurityService;
 import org.tlabs.pma.service.EmployeeService;
 import org.tlabs.pma.service.ProjectService;
 
@@ -36,6 +38,9 @@ public class HomeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private PMASecurityService pMASecurityService;
 	
 	@GetMapping("/page/{pageNo}")
 	@LogTime
@@ -100,7 +105,12 @@ public class HomeController {
 	public String loginHome(String username, String password){
 		
 		logger.info("UserName, Password {},{} " ,username, password );
+		boolean result = pMASecurityService.authenticateLogin(username,password);
 		
-		return "redirect:/home/page/1";
+		if(result){
+			return "redirect:/home/page/1";
+		} else {
+			throw new BadCredentialsException("Invalid username or password");
+		}
 	}
 }
